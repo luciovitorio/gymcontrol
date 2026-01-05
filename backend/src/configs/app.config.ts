@@ -14,5 +14,5 @@ export const config = {
 
   // OBRIGATÓRIAS (se faltar, o app nem sobe — melhor assim!)
   JWT_SECRET: getEnv("JWT_SECRET"),
-  // DATABASE_URL: getEnv("DATABASE_URL"),
+  JWT_REFRESH_SECRET: getEnv("JWT_REFRESH_SECRET"),
 } as const;
