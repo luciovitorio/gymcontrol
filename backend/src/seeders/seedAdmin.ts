@@ -3,31 +3,48 @@ import bcrypt from "bcrypt";
 import { sequelize } from "@/libs/sequelize.js";
 import { User } from "@/modules/users/models/user.model.js";
 
-const ADMIN_NAME = process.env.SEED_ADMIN_NAME ?? "Admin";
-const ADMIN_EMAIL = process.env.SEED_ADMIN_EMAIL ?? "admin@admin.com";
-const ADMIN_PASS = process.env.SEED_ADMIN_PASSWORD ?? "12345";
+const defaults = {
+  admin: {
+    name: "Admin",
+    email: "admin@admin.com",
+    password: "12345",
+  },
+  coach: {
+    name: "Coach",
+    email: "coach@coach.com",
+    password: "12345",
+  },
+  student: {
+    name: "Aluno",
+    email: "aluno@aluno.com",
+    password: "12345",
+  },
+};
+
+async function seedUser(role: "admin" | "coach" | "student") {
+  const { name, email, password } = defaults[role];
+  const [user, created] = await User.findOrCreate({
+    where: { email },
+    defaults: {
+      name,
+      email,
+      passwordHash: await bcrypt.hash(password, 12),
+      role,
+      tokenVersion: 0,
+    },
+  });
+  console.log(
+    created ? `✅ ${role} criado: ${email}` : `ℹ️ ${role} já existia: ${email}`
+  );
+}
 
 async function main() {
   await sequelize.authenticate();
-  await sequelize.sync({ alter: false }); // garanta que as migrações rodaram antes em prod
+  await sequelize.sync({ alter: false }); // ou migrações em prod
 
-  const passwordHash = await bcrypt.hash(ADMIN_PASS, 12);
-
-  const [user, created] = await User.findOrCreate({
-    where: { email: ADMIN_EMAIL },
-    defaults: {
-      name: ADMIN_NAME,
-      email: ADMIN_EMAIL,
-      passwordHash,
-      role: "admin",
-    },
-  });
-
-  if (created) {
-    console.log(`✅ Admin criado: ${ADMIN_EMAIL}`);
-  } else {
-    console.log(`ℹ️ Admin já existia: ${ADMIN_EMAIL}`);
-  }
+  await seedUser("admin");
+  await seedUser("coach");
+  await seedUser("student");
 }
 
 main()

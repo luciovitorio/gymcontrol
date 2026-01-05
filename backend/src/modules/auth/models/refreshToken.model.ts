@@ -1,4 +1,9 @@
-import { DataTypes, Model, type Optional } from "sequelize";
+import {
+  DataTypes,
+  Model,
+  type Optional,
+  type NonAttribute,
+} from "sequelize";
 import { sequelize } from "@/libs/sequelize.js";
 import { User } from "@/modules/users/models/user.model.js";
 
@@ -28,6 +33,7 @@ export class RefreshToken
   declare revokedAt: Date | null;
   declare readonly createdAt: Date;
   declare readonly updatedAt: Date;
+  declare user?: NonAttribute<User>;
 }
 
 RefreshToken.init(

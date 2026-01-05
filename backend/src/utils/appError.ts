@@ -65,3 +65,12 @@ export class UnauthorizedException extends AppError {
     super(message, HTTPSTATUS.UNAUTHORIZED, errorCode);
   }
 }
+
+export class ForbiddenException extends AppError {
+  constructor(
+    message = "Forbidden",
+    errorCode: ErrorCodeEnumType = ErrorCodeEnum.ACCESS_FORBIDDEN
+  ) {
+    super(message, HTTPSTATUS.FORBIDDEN, errorCode);
+  }
+}

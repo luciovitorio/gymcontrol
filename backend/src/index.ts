@@ -17,6 +17,7 @@ import cookieParser from "cookie-parser";
 
 // === ROTAS ===
 import { authRoutes } from "./modules/auth/routes/auth.routes.js";
+import { userRoutes } from "./modules/users/routes/user.routes.js";
 
 const app = express();
 app.use(express.json());
@@ -55,6 +56,7 @@ app.get(
 
 // === REGISTRO DAS ROTAS ===
 app.use("/auth", authRoutes);
+app.use("/users", userRoutes);
 
 // Rota 404 — tem que ser o ÚLTIMO middleware antes do errorHandler
 app.use((req: Request, res: Response, next: NextFunction) => {

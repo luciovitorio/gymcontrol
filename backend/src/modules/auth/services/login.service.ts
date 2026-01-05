@@ -14,7 +14,7 @@ export async function loginService(email: string, password: string) {
     where: {
       email: normalizedEmail,
     },
-    attributes: ["id", "name", "email", "passwordHash"],
+    attributes: ["id", "name", "email", "passwordHash", "role", "tokenVersion"],
   });
 
   if (!user) {
@@ -33,7 +33,11 @@ export async function loginService(email: string, password: string) {
     );
   }
 
-  const { accessToken, refreshToken } = await createTokens(user.id);
+  const { accessToken, refreshToken } = await createTokens(
+    user.id,
+    user.role,
+    user.tokenVersion
+  );
 
   await RefreshToken.create({
     token: refreshToken,
@@ -42,7 +46,12 @@ export async function loginService(email: string, password: string) {
   });
 
   return {
-    user: { id: user.id, name: user.name, email: user.email },
+    user: {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    },
     accessToken,
     refreshToken,
   };

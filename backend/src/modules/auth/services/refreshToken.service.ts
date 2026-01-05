@@ -12,7 +12,9 @@ export async function refreshTokenService(oldRefreshToken: string) {
   // 1. Verifica se o token existe no banco e não expirou
   const tokenRecord = await RefreshToken.findOne({
     where: { token: oldRefreshToken },
-    include: [{ model: User, as: "user", attributes: ["id"] }],
+    include: [
+      { model: User, as: "user", attributes: ["id", "role", "tokenVersion"] },
+    ],
   });
 
   if (!tokenRecord || tokenRecord.expiresAt.getTime() <= Date.now()) {
@@ -27,7 +29,9 @@ export async function refreshTokenService(oldRefreshToken: string) {
 
   // 3. Gera novos tokens
   const { accessToken, refreshToken: newRefreshToken } = await createTokens(
-    tokenRecord.userId
+    tokenRecord.userId,
+    tokenRecord.user?.role ?? "student",
+    tokenRecord.user?.tokenVersion ?? 0
   );
 
   // 4. Invalida o antigo e salva o novo (rotação de refresh token)

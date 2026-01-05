@@ -7,11 +7,15 @@ type UserAttributes = {
   email: string;
   passwordHash: string;
   role: "admin" | "coach" | "student";
+  tokenVersion: number;
   createdAt?: Date;
   updatedAt?: Date;
 };
 
-type UserCreation = Optional<UserAttributes, "id" | "createdAt" | "updatedAt">;
+type UserCreation = Optional<
+  UserAttributes,
+  "id" | "createdAt" | "updatedAt" | "tokenVersion"
+>;
 
 export class User
   extends Model<UserAttributes, UserCreation>
@@ -22,6 +26,7 @@ export class User
   declare email: string;
   declare passwordHash: string;
   declare role: "admin" | "coach" | "student";
+  declare tokenVersion: number;
   declare readonly createdAt: Date;
   declare readonly updatedAt: Date;
 }
@@ -50,6 +55,11 @@ User.init(
       type: DataTypes.ENUM("admin", "coach", "student"),
       allowNull: false,
       defaultValue: "student",
+    },
+    tokenVersion: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0,
     },
   },
   {
