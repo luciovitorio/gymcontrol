@@ -18,17 +18,11 @@ import cookieParser from "cookie-parser";
 // === ROTAS ===
 import { authRoutes } from "./modules/auth/routes/auth.routes.js";
 import { userRoutes } from "./modules/users/routes/user.routes.js";
+import { planRoutes } from "./modules/plans/routes/plan.routes.js";
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
-app.use(
-  cors({
-    // origin: config.FRONTEND_ORIGIN,
-    credentials: true,
-  })
-);
 
 app.set("trust proxy", 1); // se estiver atrás de proxy (NGINX/Heroku/etc)
 app.use(cookieParser());
@@ -57,6 +51,7 @@ app.get(
 // === REGISTRO DAS ROTAS ===
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
+app.use("/plans", planRoutes);
 
 // Rota 404 — tem que ser o ÚLTIMO middleware antes do errorHandler
 app.use((req: Request, res: Response, next: NextFunction) => {
@@ -67,8 +62,6 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     )
   );
 });
-
-await sequelize.sync({ alter: false });
 
 app.use(errorHandler);
 

@@ -7,7 +7,13 @@
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "seed:admin": "tsx src/seeders/seedAdmin.ts"
+    "seed:admin": "tsx src/database/seeders/seedAdmin.ts",
+    "db:migrate": "sequelize-cli db:migrate",
+    "db:migrate:undo": "sequelize-cli db:migrate:undo",
+    "db:create": "sequelize-cli db:create",
+    "migration:generate": "sequelize-cli migration:generate --name",
+    "db:fresh": "sequelize-cli db:migrate:undo:all && sequelize-cli db:migrate",
+    "db:fresh:seed": "npm run db:fresh && npm run seed:admin"
   },
   "keywords": [],
   "author": "",
@@ -36,6 +42,7 @@
     "@types/express": "^5.0.6",
     "@types/morgan": "^1.9.10",
     "@types/node": "^25.0.3",
+    "sequelize-cli": "^6.6.5",
     "tsx": "^4.21.0"
   }
 }

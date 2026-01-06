@@ -6,6 +6,7 @@ type UserAttributes = {
   name: string;
   email: string;
   passwordHash: string;
+  cellphone?: string;
   role: "admin" | "coach" | "student";
   tokenVersion: number;
   createdAt?: Date;
@@ -14,7 +15,7 @@ type UserAttributes = {
 
 type UserCreation = Optional<
   UserAttributes,
-  "id" | "createdAt" | "updatedAt" | "tokenVersion"
+  "id" | "createdAt" | "updatedAt" | "tokenVersion" | "cellphone"
 >;
 
 export class User
@@ -25,6 +26,7 @@ export class User
   declare name: string;
   declare email: string;
   declare passwordHash: string;
+  declare cellphone?: string;
   declare role: "admin" | "coach" | "student";
   declare tokenVersion: number;
   declare readonly createdAt: Date;
@@ -50,6 +52,10 @@ User.init(
     passwordHash: {
       type: DataTypes.STRING(120),
       allowNull: false,
+    },
+    cellphone: {
+      type: DataTypes.STRING(20),
+      allowNull: true,
     },
     role: {
       type: DataTypes.ENUM("admin", "coach", "student"),

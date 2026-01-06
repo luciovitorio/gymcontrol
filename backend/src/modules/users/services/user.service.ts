@@ -13,15 +13,23 @@ const sanitize = (user: User) => ({
   name: user.name,
   email: user.email,
   role: user.role,
+  cellphone: user.cellphone,
   createdAt: user.createdAt,
 });
 
 export async function createUserService(data: CreateUserDto) {
   const exists = await User.findOne({ where: { email: data.email } });
   if (exists) throw new BadRequestException("E-mail já em uso");
-  const { password, ...rest } = data;
+
+  const { password, cellphone, ...rest } = data;
   const passwordHash = await bcrypt.hash(password, 12);
-  const user = await User.create({ ...rest, passwordHash });
+
+  const user = await User.create({
+    ...rest,
+    passwordHash,
+    ...(cellphone && { cellphone }),
+  });
+
   return sanitize(user);
 }
 
@@ -44,7 +52,7 @@ export async function listUsersService(query: ListUserQuery) {
     limit,
     offset,
     order: [["createdAt", "DESC"]],
-    attributes: ["id", "name", "email", "role", "createdAt"],
+    attributes: ["id", "name", "email", "role", "cellphone", "createdAt"],
   });
 
   return {
@@ -58,7 +66,7 @@ export async function listUsersService(query: ListUserQuery) {
 
 export async function getUserService(id: number) {
   const user = await User.findByPk(id, {
-    attributes: ["id", "name", "email", "role", "createdAt"],
+    attributes: ["id", "name", "email", "role", "cellphone", "createdAt"],
   });
   if (!user) throw new NotFoundException("Usuário não encontrado");
   return sanitize(user);
@@ -78,6 +86,7 @@ export async function updateUserService(id: number, data: UpdateUserDto) {
     email: string;
     role: "admin" | "coach" | "student";
     passwordHash: string;
+    cellphone: string;
   }> = {};
 
   if (data.name !== undefined) updateData.name = data.name;
@@ -85,6 +94,7 @@ export async function updateUserService(id: number, data: UpdateUserDto) {
   if (data.role !== undefined) updateData.role = data.role;
   if (data.password)
     updateData.passwordHash = await bcrypt.hash(data.password, 12);
+  if (data.cellphone !== undefined) updateData.cellphone = data.cellphone;
 
   await user.update(updateData);
   return sanitize(user);

@@ -6,17 +6,17 @@ import { User } from "@/modules/users/models/user.model.js";
 const defaults = {
   admin: {
     name: "Admin",
-    email: "admin@admin.com",
+    email: "admin@email.com",
     password: "12345",
   },
   coach: {
     name: "Coach",
-    email: "coach@coach.com",
+    email: "coach@email.com",
     password: "12345",
   },
   student: {
     name: "Aluno",
-    email: "aluno@aluno.com",
+    email: "aluno@email.com",
     password: "12345",
   },
 };
