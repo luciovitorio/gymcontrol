@@ -43,9 +43,9 @@ app.get(
       "This is a bad request",
       ErrorCodeEnum.AUTH_USER_NOT_FOUND
     );
-    // return res.status(HTTPSTATUS.OK).json({
-    //   message: "Hello Subscribe to the channel & share",
-    // });
+    return res.status(HTTPSTATUS.OK).json({
+      message: "Hello Subscribe to the channel & share",
+    });
   })
 );
 
