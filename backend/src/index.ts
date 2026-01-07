@@ -20,6 +20,8 @@ import { authRoutes } from "./modules/auth/routes/auth.routes.js";
 import { userRoutes } from "./modules/users/routes/user.routes.js";
 import { planRoutes } from "./modules/plans/routes/plan.routes.js";
 import { userPlanRoutes } from "./modules/plans/routes/userPlan.routes.js";
+import { classRoutes } from "./modules/classes/routes/class.routes.js";
+import { enrollmentRoutes } from "./modules/classes/routes/enrollment.routes.js";
 
 const app = express();
 app.use(express.json());
@@ -53,7 +55,9 @@ app.get(
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
 app.use("/plans", planRoutes);
-app.use(userPlanRoutes); // Rotas de user-plan (já vem com prefixo /users/:userId/plans)
+app.use(userPlanRoutes);
+app.use("/classes", classRoutes);
+app.use(enrollmentRoutes);
 
 // Rota 404 — tem que ser o ÚLTIMO middleware antes do errorHandler
 app.use((req: Request, res: Response, next: NextFunction) => {
