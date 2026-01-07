@@ -3,6 +3,7 @@ import { Login } from "./pages/auth/Login";
 import { AuthLayout, ProtectedLayout } from "./layouts";
 import { Dashboard } from "./pages/dashboard/Dashboard";
 import { Profile } from "./pages/profile/Profile";
+import { UsersList } from "./pages/admin/users/UsersList";
 
 export const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ export const router = createBrowserRouter([
       {
         path: "/profile",
         element: <Profile />,
+      },
+      {
+        path: "/admin/users",
+        element: <UsersList />,
       },
     ],
   },

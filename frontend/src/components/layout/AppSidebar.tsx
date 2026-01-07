@@ -39,7 +39,7 @@ const allNavItems: NavItem[] = [
   },
 
   // Admin
-  { icon: Users, label: "Alunos", href: "/admin/users", roles: ["admin"] },
+  { icon: Users, label: "Usuários", href: "/admin/users", roles: ["admin"] },
   {
     icon: Dumbbell,
     label: "Aulas",

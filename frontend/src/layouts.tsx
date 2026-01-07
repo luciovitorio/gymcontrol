@@ -2,7 +2,6 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useAuthStore } from "@/store/auth.store";
 import { AppSidebar } from "@/components/layout/AppSidebar";
 import { AppHeader } from "@/components/layout/AppHeader";
-import { Toaster } from "sonner";
 
 export function AuthLayout() {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
@@ -32,7 +31,6 @@ export function ProtectedLayout() {
           </main>
         </div>
       </div>
-      <Toaster />
     </div>
   );
 }
