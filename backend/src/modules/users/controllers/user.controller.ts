@@ -48,4 +48,21 @@ export const userController = {
     await deleteUserService(id);
     res.status(204).send();
   }),
+
+  // === Profile Methods ===
+  getProfile: asyncHandler(async (req: Request, res: Response) => {
+    const id = req.user!.id; // Garantido pelo requireAuth
+    const user = await getUserService(id);
+    res.json(user);
+  }),
+
+  updateProfile: asyncHandler(async (req: Request, res: Response) => {
+    const id = req.user!.id;
+    // Remove "role" do body para evitar escalação de privilégio
+    const { role, ...safeData } = updateUserSchema.parse(req.body);
+
+    // Chama o service. O service faz hash da senha se vier no safeData.
+    const user = await updateUserService(id, safeData);
+    res.json(user);
+  }),
 };

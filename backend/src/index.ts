@@ -31,7 +31,11 @@ app.set("trust proxy", 1); // se estiver atrás de proxy (NGINX/Heroku/etc)
 app.use(cookieParser());
 app.use(
   cors({
-    origin: config.FRONTEND_ORIGIN,
+    origin: [
+      config.FRONTEND_ORIGIN,
+      "http://localhost:5173",
+      "http://127.0.0.1:5173",
+    ],
     credentials: true,
   })
 );
